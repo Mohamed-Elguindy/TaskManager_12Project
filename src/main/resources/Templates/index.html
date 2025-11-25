@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Task Manager</title>
+    <link rel="stylesheet" href="../../../../../../../Desktop/Ali/Frontend/12-project/sryle.css" />
+  </head>
+  <body>
+    <div class="task-manager-container">
+      <header class="task-manager-header">
+        <h1 class="logo">Task Manager</h1>
+      </header>
+
+      <main class="task-list-area">
+        <div class="task-summary">1 Tasks</div>
+        <a href="#new-task-modal" class="new-task-btn">+ New Task</a>
+
+        <div class="task-card">
+          <div class="task-header">
+            <h2 class="task-title">To-do-Guindy</h2>
+            <div class="task-actions">
+              <span class="icon edit-icon">✏</span>
+              <span class="icon delete-icon">🗑</span>
+            </div>
+          </div>
+          <p class="task-description">To-do-guindy</p>
+          <div class="task-details">
+            <span class="priority-tag medium">MEDIUM</span>
+            <span class="status-tag in-progress">
+              <span class="icon">🕒</span> IN PROGRESS
+            </span>
+          </div>
+          <div class="task-due-date">
+            <span class="icon">⚠</span> Due: 11/29/2025, 4:08:00 PM
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <div id="new-task-modal" class="modal-overlay">
+      <div class="modal-content">
+        <a href="#" class="close-btn">×</a>
+        <h2 class="modal-title">Create New Task</h2>
+        <form class="task-form">
+          <input type="text" placeholder="Title" class="form-input" />
+          <textarea placeholder="Description" class="form-textarea"></textarea>
+
+          <div class="form-row">
+            <select class="form-select-priority">
+              <option class="low">Low Priority</option>
+              <option class="medium">Medium Priority</option>
+              <option class="High">High Priority</option>
+              <option class="very-high">Very High Priority</option>
+            </select>
+            <select class="form-select-status">
+              <option class="to-do">To Do</option>
+              <option class="in-progress">In Progress</option>
+              <option class="Postponed">Postponed</option>
+              <option class="done">Done</option>
+            </select>
+          </div>
+
+          <input
+            type="text"
+            placeholder="mm/dd/yyyy -- : --"
+            class="form-input date-time-input"
+          />
+
+          <div class="form-actions">
+            <a href="#" class="cancel-btn">Cancel</a>
+            <button type="submit" class="create-btn">Create</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,395 @@
+/* Custom Fonts (Optional, but helps match the look) */
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap");
+
+:root {
+  /* Define color variables for easy modification */
+  --color-dark-bg: #1e1124;
+  --color-task-card: #282132;
+  --color-primary-purple: #9c27b0;
+  --color-secondary-pink: #f06292;
+  --color-text-light: #ffffff;
+  --color-text-dim: #b39ddb;
+  --color-medium-priority: #ffb300;
+  --color-in-progress-status: #3f51b5;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Montserrat", sans-serif;
+}
+
+body {
+  /* Background Gradient (matching the purple-pink fade) */
+  background: linear-gradient(
+    135deg,
+    var(--color-dark-bg) 0%,
+    #3a1c4a 50%,
+    #5d2b77 100%
+  );
+  background-size: cover;
+  min-height: 100vh;
+  color: var(--color-text-light);
+  padding: 20px;
+}
+
+/* --- Header and Layout --- */
+.task-manager-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.task-manager-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 20px;
+}
+
+.logo {
+  font-size: 30px;
+  font-weight: 700;
+  /* Gradient text for 'Task Manager' */
+  background: linear-gradient(
+    to right,
+    var(--color-secondary-pink),
+    var(--color-primary-purple)
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* --- Task List Area --- */
+.task-list-area {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Aligns task card and summary to the left */
+}
+
+.task-summary {
+  font-size: 16px;
+  color: var(--color-text-dim);
+  margin-bottom: 20px;
+}
+
+.new-task-btn {
+  /* Gradient Button (New Task) */
+  background: linear-gradient(
+    to right,
+    var(--color-primary-purple),
+    var(--color-secondary-pink)
+  );
+  color: var(--color-text-light);
+  text-decoration: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  position: absolute; /* Positioned similarly to the image */
+  top: 15px;
+  right: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  transition: opacity 0.3s;
+}
+
+.new-task-btn:hover {
+  opacity: 0.9;
+}
+
+/* --- Task Card Styling --- */
+.task-card {
+  background-color: var(--color-task-card);
+  border-radius: 10px;
+  padding: 20px;
+  width: 350px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+  margin-top: 20px;
+}
+
+.task-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.task-title {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.task-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.icon {
+  font-size: 16px;
+  cursor: pointer;
+  color: var(--color-text-dim);
+  transition: color 0.2s;
+}
+
+.edit-icon:hover {
+  color: var(--color-primary-purple);
+}
+.delete-icon:hover {
+  color: var(--color-secondary-pink);
+}
+
+.task-description {
+  color: var(--color-text-dim);
+  font-size: 14px;
+  margin-bottom: 15px;
+}
+
+.task-details {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.priority-tag,
+.status-tag {
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+}
+
+.medium {
+  background-color: var(--color-medium-priority);
+  color: var(--color-task-card);
+  border: 1px solid var(--color-medium-priority);
+}
+
+.in-progress {
+  background-color: var(--color-task-card);
+  color: var(--color-in-progress-status);
+  border: 1px solid var(--color-in-progress-status);
+}
+
+.in-progress .icon {
+  margin-right: 5px;
+  font-size: 12px;
+  color: var(--color-in-progress-status);
+}
+
+.task-due-date {
+  font-size: 14px;
+  color: var(--color-text-dim);
+}
+
+.task-due-date .icon {
+  margin-right: 5px;
+  color: var(--color-text-dim);
+}
+
+/* --- Modal Styling --- */
+
+/* Initially hide the modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: none; /* Hidden by default */
+  z-index: 1000;
+  /* Center the content */
+  align-items: center;
+  justify-content: center;
+}
+
+/* Modal visibility logic using CSS :target (no JavaScript needed) */
+.modal-overlay:target {
+  display: flex; /* Show when the URL hash matches the id */
+}
+
+.modal-content {
+  background-color: var(--color-task-card);
+  border-radius: 15px;
+  padding: 30px;
+  width: 90%;
+  max-width: 500px;
+  position: relative;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  border: 1px solid var(--color-primary-purple);
+}
+
+.close-btn {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-size: 24px;
+  color: var(--color-text-dim);
+  text-decoration: none;
+  line-height: 1;
+  transition: color 0.2s;
+}
+
+.close-btn:hover {
+  color: var(--color-secondary-pink);
+}
+
+.modal-title {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 25px;
+  color: var(--color-text-light);
+}
+
+.task-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.form-input,
+.form-textarea,
+.form-select {
+  width: 100%;
+  padding: 12px;
+  background-color: var(--color-dark-bg);
+  border: 1px solid rgba(156, 39, 176, 0.5); /* Primary Purple border */
+  border-radius: 8px;
+  color: var(--color-text-light);
+  font-size: 16px;
+  resize: none;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.form-input:focus,
+.form-textarea:focus,
+.form-select:focus {
+  border-color: var(--color-primary-purple);
+}
+
+.form-textarea {
+  min-height: 100px;
+}
+
+.form-row {
+  display: flex;
+  gap: 15px;
+}
+
+.form-select-priority,
+.form-select-status {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  width: 100%;
+  padding: 12px;
+  background-color: var(--color-dark-bg);
+  border: 1px solid rgba(156, 39, 176, 0.5);
+  border-radius: 8px;
+  color: var(--color-text-light);
+  font-size: 16px;
+  outline: none;
+  transition: border-color 0.2s;
+
+  background-image: url('data:image/svg+xml;utf8,<svg fill="white" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  padding-right: 30px;
+}
+
+.form-select-priority:focus,
+.form-select-status:focus {
+  border-color: var(--color-primary-purple);
+}
+
+/* ===================================================== */
+/* ---------------- PRIORITY OPTIONS ------------------- */
+/* ===================================================== */
+
+.form-select-priority option {
+  background-color: var(--color-task-card);
+}
+
+/* Using your class names */
+.form-select-priority option.low {
+  color: #4caf50; /* Low */
+}
+
+.form-select-priority option.medium {
+  color: #ffb300; /* Medium */
+}
+
+.form-select-priority option.High {
+  color: #ff5722; /* High */
+}
+
+.form-select-priority option.very-high {
+  color: #e91e63; /* Very High */
+}
+
+/* ===================================================== */
+/* ------------------ STATUS OPTIONS ------------------- */
+/* ===================================================== */
+
+.form-select-status option {
+  background-color: var(--color-task-card);
+}
+
+.form-select-status option.to-do {
+  color: #9c27b0; /* To Do */
+}
+
+.form-select-status option.in-progress {
+  color: #3f51b5; /* In Progress */
+}
+
+.form-select-status option.Postponed {
+  color: #ff9800; /* Postponed */
+}
+
+.form-select-status option.done {
+  color: #4caf50; /* Done */
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.cancel-btn {
+  background-color: var(--color-dark-bg);
+  color: var(--color-text-light);
+  text-decoration: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 16px;
+  border: 1px solid var(--color-text-dim);
+  transition: border-color 0.2s;
+}
+
+.cancel-btn:hover {
+  border-color: var(--color-text-light);
+}
+
+.create-btn {
+  /* Gradient Button (Create) */
+  background: linear-gradient(to right, #a030c0, #f06292);
+  color: var(--color-text-light);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.3s;
+}
+
+.create-btn:hover {
+  opacity: 0.9;
+}
