@@ -22,8 +22,8 @@
           <div class="task-header">
             <h2 class="task-title">To-do-Guindy</h2>
             <div class="task-actions">
-              <span class="icon edit-icon">✏</span>
-              <span class="icon delete-icon">🗑</span>
+                <a href="#edit-task-modal" class="icon edit-icon">✏</a>
+              <button class="icon delete-icon">🗑</button>
             </div>
           </div>
           <p class="task-description">To-do-guindy</p>
@@ -75,6 +75,43 @@
           </div>
         </form>
       </div>
+    </div>
+    <div id="edit-task-modal" class="modal-overlay">
+        <div class="modal-content">
+            <a href="#" class="close-btn">×</a>
+            <h2 class="modal-title">Edit Task</h2>
+
+            <form class="task-form">
+                <textarea placeholder="Description" class="form-textarea"></textarea>
+
+                <div class="form-row">
+                    <select class="form-select-priority">
+                        <option class="low">Low Priority</option>
+                        <option class="medium">Medium Priority</option>
+                        <option class="High">High Priority</option>
+                        <option class="very-high">Very High Priority</option>
+                    </select>
+
+                    <select class="form-select-status">
+                        <option class="to-do">To Do</option>
+                        <option class="in-progress">In Progress</option>
+                        <option class="Postponed">Postponed</option>
+                        <option class="done">Done</option>
+                    </select>
+                </div>
+
+                <input
+                        type="text"
+                        placeholder="mm/dd/yyyy -- : --"
+                        class="form-input date-time-input"
+                />
+
+                <div class="form-actions">
+                    <a href="#" class="cancel-btn">Cancel</a>
+                    <button type="submit" class="create-btn">Save</button>
+                </div>
+            </form>
+        </div>
     </div>
   </body>
 </html>

@@ -133,8 +133,17 @@ body {
 .edit-icon:hover {
   color: var(--color-primary-purple);
 }
+.delete-icon {
+  background: none !important;
+  border: none !important;
+  padding: 0;
+  box-shadow: none !important;
+}
+
 .delete-icon:hover {
   color: var(--color-secondary-pink);
+  text-decoration: underline;
+  text-underline-offset: 4px;
 }
 
 .task-description {
