@@ -1,42 +1,41 @@
 package com.elguindy.taskmanager_12project.service;
 
+import com.elguindy.taskmanager_12project.repository.TaskRepository;
 import com.elguindy.taskmanager_12project.entity.TaskEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.elguindy.taskmanager_12project.repository.TaskRepository;
 import com.elguindy.taskmanager_12project.dto.TaskDTO;
 import com.elguindy.taskmanager_12project.dto.TaskResponseDTO;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class TaskService {
     @Autowired
     private TaskRepository taskRepository;
-    public TaskResponseDTO  createTask(TaskDTO taskDTO){
+    public void  createTask(TaskDTO taskDTO){
         TaskEntity taskEntity=new TaskEntity();
         taskEntity.setTitle(taskDTO.getTitle());
         taskEntity.setDescription(taskDTO.getDescription());
         taskEntity.setPriority(taskDTO.getPriority());
         taskEntity.setStatus(taskDTO.getStatus());
-        taskEntity.setdueDate(taskDTO.getdueDate());
-        TaskEntity savedEntity= taskRepository.save(taskEntity);
-        return new TaskResponseDTO(savedEntity);
+        taskEntity.setDueDate(taskDTO.getDueDate());
+        taskRepository.save(taskEntity);
     }
-    public TaskResponseDTO updateTask(Long id, TaskDTO taskDTO) {
+    public void updateTask(Long id, TaskDTO taskDTO) {
         TaskEntity taskEntity = taskRepository.findById(id).orElseThrow(() -> new RuntimeException("Task not found"));
         taskEntity.setTitle(taskDTO.getTitle());
         taskEntity.setDescription(taskDTO.getDescription());
         taskEntity.setPriority(taskDTO.getPriority());
         taskEntity.setStatus(taskDTO.getStatus());
-        taskEntity.setdueDate(taskDTO.getdueDate());
-        TaskEntity updatedEntity = taskRepository.save(taskEntity);
-        return new TaskResponseDTO(updatedEntity);
+        taskEntity.setDueDate(taskDTO.getDueDate());
+        taskRepository.save(taskEntity);
+
     }
-    public TaskResponseDTO deleteTask(long id){
+    public void deleteTask(long id){
         TaskEntity taskEntity = taskRepository.findById(id).orElseThrow(() -> new RuntimeException("Task not found"));
         taskRepository.delete(taskEntity);
-        return new TaskResponseDTO(taskEntity);
     }
     public List<TaskResponseDTO> getAllTasks(){
         List<TaskEntity> tasks= taskRepository.findAll();

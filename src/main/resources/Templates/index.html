@@ -1,117 +1,166 @@
 <!DOCTYPE html>
-
-
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Task Manager</title>
-    <link rel="stylesheet" href="assets/css/style.css" />
-  </head>
-  <body>
-    <div class="task-manager-container">
-      <header class="task-manager-header">
-        <h1 class="logo">Task Manager</h1>
-      </header>
 
-      <main class="task-list-area">
-        <div class="task-summary">1 Tasks</div>
+    <!-- Your CSS -->
+    <link rel="stylesheet" href="/assets/css/style.css"/>
+</head>
+
+<body>
+<div class="task-manager-container">
+
+    <!-- HEADER -->
+    <header class="task-manager-header">
+        <h1 class="logo">Task Manager</h1>
+    </header>
+
+    <!-- MAIN TASK LIST -->
+    <main class="task-list-area">
+
+        <!-- Count tasks -->
+        <div class="task-summary" th:text="${tasks.size()} + ' Tasks'"></div>
+
+        <!-- New Task Button -->
         <a href="#new-task-modal" class="new-task-btn">+ New Task</a>
 
-        <div class="task-card">
-          <div class="task-header">
-            <h2 class="task-title">To-do-Guindy</h2>
-            <div class="task-actions">
-                <a href="#edit-task-modal" class="icon edit-icon">✏</a>
-              <button class="icon delete-icon">🗑</button>
-            </div>
-          </div>
-          <p class="task-description">To-do-guindy</p>
-          <div class="task-details">
-            <span class="priority-tag medium">MEDIUM</span>
-            <span class="status-tag in-progress">
-              <span class="icon">🕒</span> IN PROGRESS
-            </span>
-          </div>
-          <div class="task-due-date">
-            <span class="icon">⚠</span> Due: 11/29/2025, 4:08:00 PM
-          </div>
-        </div>
-      </main>
-    </div>
+        <!-- TASK CARD TEMPLATE -->
+        <div th:each="task : ${tasks}" class="task-card">
 
-    <div id="new-task-modal" class="modal-overlay">
-      <div class="modal-content">
+            <div class="task-header">
+                <h2 class="task-title" th:text="${task.title}"></h2>
+
+                <div class="task-actions">
+                    <a th:href="'#edit-modal-' + ${task.id}" class="icon edit-icon">✏</a>
+
+                    <a th:href="@{'/tasks/delete/' + ${task.id}}" class="icon delete-icon">
+                        🗑
+                    </a>
+                </div>
+            </div>
+
+            <p class="task-description" th:text="${task.description}"></p>
+
+            <div class="task-details">
+                <span class="priority-tag" th:text="${task.priority}"></span>
+                <span class="status-tag">
+                    <span class="icon">🕒</span>
+                    <span th:text="${task.status}"></span>
+                </span>
+            </div>
+
+            <div class="task-due-date">
+                <span class="icon">⚠</span>
+                <span th:text="${#temporals.format(task.dueDate, 'MM/dd/yyyy HH:mm')}"></span>
+            </div>
+        </div>
+    </main>
+</div>
+
+
+<!-- -------------- CREATE TASK MODAL ---------------- -->
+<div id="new-task-modal" class="modal-overlay">
+    <div class="modal-content">
         <a href="#" class="close-btn">×</a>
         <h2 class="modal-title">Create New Task</h2>
-        <form class="task-form">
-          <input type="text" placeholder="Title" class="form-input" />
-          <textarea placeholder="Description" class="form-textarea"></textarea>
 
-          <div class="form-row">
-            <select class="form-select-priority">
-              <option class="low">Low Priority</option>
-              <option class="medium">Medium Priority</option>
-              <option class="High">High Priority</option>
-              <option class="very-high">Very High Priority</option>
-            </select>
-            <select class="form-select-status">
-              <option class="to-do">To Do</option>
-              <option class="in-progress">In Progress</option>
-              <option class="Postponed">Postponed</option>
-              <option class="done">Done</option>
-            </select>
-          </div>
+        <form th:action="@{/tasks}" th:object="${task}" method="post" class="task-form">
 
-          <input
-            type="text"
-            placeholder="mm/dd/yyyy -- : --"
-            class="form-input date-time-input"
-          />
+            <input type="text" th:field="*{title}" placeholder="Title" class="form-input"/>
 
-          <div class="form-actions">
-            <a href="#" class="cancel-btn">Cancel</a>
-            <button type="submit" class="create-btn">Create</button>
-          </div>
+            <textarea th:field="*{description}" placeholder="Description" class="form-textarea"></textarea>
+
+            <div class="form-row">
+                <select th:field="*{priority}" class="form-select-priority">
+                    <option th:each="p : ${T(com.elguindy.taskmanager_12project.utill.Priority).values()}"
+                            th:value="${p}"
+                            th:text="${p}">
+                    </option>
+                </select>
+
+                <select th:field="*{status}" class="form-select-status">
+                    <option th:each="s : ${T(com.elguindy.taskmanager_12project.utill.Status).values()}"
+                            th:value="${s}"
+                            th:text="${s}">
+                    </option>
+                </select>
+            </div>
+
+            <input type="datetime-local"
+                   th:field="*{dueDate}"
+                   class="form-input date-time-input"/>
+
+            <div class="form-actions">
+                <a href="#" class="cancel-btn">Cancel</a>
+                <button type="submit" class="create-btn">Create</button>
+            </div>
         </form>
-      </div>
     </div>
-    <div id="edit-task-modal" class="modal-overlay">
-        <div class="modal-content">
-            <a href="#" class="close-btn">×</a>
-            <h2 class="modal-title">Edit Task</h2>
+</div>
 
-            <form class="task-form">
-                <textarea placeholder="Description" class="form-textarea"></textarea>
 
-                <div class="form-row">
-                    <select class="form-select-priority">
-                        <option class="low">Low Priority</option>
-                        <option class="medium">Medium Priority</option>
-                        <option class="High">High Priority</option>
-                        <option class="very-high">Very High Priority</option>
-                    </select>
 
-                    <select class="form-select-status">
-                        <option class="to-do">To Do</option>
-                        <option class="in-progress">In Progress</option>
-                        <option class="Postponed">Postponed</option>
-                        <option class="done">Done</option>
-                    </select>
-                </div>
+<!-- -------------- EDIT TASK MODALS (One per task) ---------------- -->
+<div th:each="task : ${tasks}"
+     th:id="'edit-modal-' + ${task.id}"
+     class="modal-overlay">
 
-                <input
-                        type="text"
-                        placeholder="mm/dd/yyyy -- : --"
-                        class="form-input date-time-input"
-                />
+    <div class="modal-content">
+        <a href="#" class="close-btn">×</a>
 
-                <div class="form-actions">
-                    <a href="#" class="cancel-btn">Cancel</a>
-                    <button type="submit" class="create-btn">Save</button>
-                </div>
-            </form>
-        </div>
+        <h2 class="modal-title">Edit Task</h2>
+
+        <form th:action="@{'/tasks/' + ${task.id}}"
+              method="post"
+              class="task-form">
+
+            <input type="hidden" name="_method" value="put"/>
+
+            <input type="text"
+                   name="title"
+                   class="form-input"
+                   th:value="${task.title}"/>
+
+            <textarea name="description"
+                      class="form-textarea"
+                      th:text="${task.description}"></textarea>
+
+            <div class="form-row">
+
+                <select name="priority" class="form-select-priority">
+                    <option th:each="p : ${T(com.elguindy.taskmanager_12project.utill.Priority).values()}"
+                            th:selected="${p == task.priority}"
+                            th:value="${p}"
+                            th:text="${p}">
+                    </option>
+                </select>
+
+                <select name="status" class="form-select-status">
+                    <option th:each="s : ${T(com.elguindy.taskmanager_12project.utill.Status).values()}"
+                            th:selected="${s == task.status}"
+                            th:value="${s}"
+                            th:text="${s}">
+                    </option>
+                </select>
+
+            </div>
+
+            <input type="datetime-local"
+                   name="dueDate"
+                   class="form-input date-time-input"
+                   th:value="${#temporals.format(task.dueDate, 'yyyy-MM-dd''T''HH:mm')}"/>
+
+            <div class="form-actions">
+                <a href="#" class="cancel-btn">Cancel</a>
+                <button type="submit" class="create-btn">Save</button>
+            </div>
+
+        </form>
     </div>
-  </body>
+</div>
+
+
+</body>
 </html>

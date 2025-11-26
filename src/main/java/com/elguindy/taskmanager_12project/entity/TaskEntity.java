@@ -1,5 +1,7 @@
 package com.elguindy.taskmanager_12project.entity;
 
+import com.elguindy.taskmanager_12project.utill.Priority;
+import com.elguindy.taskmanager_12project.utill.Status;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
@@ -12,18 +14,23 @@ import java.time.LocalDateTime;
 @Entity
 public class TaskEntity {
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue (strategy= GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false)
     private String description;
     @Column(nullable = false)
     private String title;
-    private LocalDateTime createdAt;
     @CreationTimestamp
-    private LocalDateTime updatedAt;
+    private LocalDateTime createdAt;
     @UpdateTimestamp
+    private LocalDateTime updatedAt;
+
     private LocalDateTime dueDate;
- //   private StatusEnum statusEnum ;
-//private Priority priorityEnum;
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Status status ;
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Priority priority;
 
 }
