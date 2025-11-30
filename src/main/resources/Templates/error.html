@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error - Task Manager</title>
+
+    <link rel="stylesheet" href="/assets/css/style.css"/>
+    <style>
+        .error-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 70vh;
+            text-align: center;
+            padding: 20px;
+        }
+        .error-title {
+            font-size: 40px;
+            font-weight: bold;
+            color: #e74c3c;
+            margin-bottom: 20px;
+        }
+        .error-message {
+            font-size: 22px;
+            color: #959595;
+            margin-bottom: 30px;
+        }
+        .back-btn {
+            padding: 12px 22px;
+            background-color: #3498db;
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 18px;
+            transition: 0.2s ease-in-out;
+        }
+        .back-btn:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="task-manager-container">
+
+    <header class="task-manager-header">
+        <h1 class="logo">Task Manager</h1>
+    </header>
+
+    <div class="error-container">
+
+        <div class="error-title">⚠ Error</div>
+
+        <!-- THIS SHOWS THE EXCEPTION MESSAGE -->
+        <div class="error-message" th:text="${errorMessage}">
+            Something went wrong.
+        </div>
+
+        <a href="/" class="back-btn">← Back to Home</a>
+    </div>
+
+</div>
+
+</body>
+</html>

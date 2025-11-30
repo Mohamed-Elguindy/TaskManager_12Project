@@ -1,5 +1,6 @@
 package com.elguindy.taskmanager_12project.service;
 
+import com.elguindy.taskmanager_12project.exception.TaskNotFoundException;
 import com.elguindy.taskmanager_12project.repository.TaskRepository;
 import com.elguindy.taskmanager_12project.entity.TaskEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import com.elguindy.taskmanager_12project.dto.TaskResponseDTO;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TaskService {
@@ -24,18 +26,29 @@ public class TaskService {
         taskRepository.save(taskEntity);
     }
     public void updateTask(Long id, TaskDTO taskDTO) {
-        TaskEntity taskEntity = taskRepository.findById(id).orElseThrow(() -> new RuntimeException("Task not found"));
-        taskEntity.setTitle(taskDTO.getTitle());
-        taskEntity.setDescription(taskDTO.getDescription());
-        taskEntity.setPriority(taskDTO.getPriority());
-        taskEntity.setStatus(taskDTO.getStatus());
-        taskEntity.setDueDate(taskDTO.getDueDate());
-        taskRepository.save(taskEntity);
+        Optional<TaskEntity> taskEntityOptional = taskRepository.findById(id);
+        if (taskEntityOptional.isPresent()) {
+            TaskEntity taskEntity = taskEntityOptional.get();
+            taskEntity.setTitle(taskDTO.getTitle());
+            taskEntity.setDescription(taskDTO.getDescription());
+            taskEntity.setPriority(taskDTO.getPriority());
+            taskEntity.setStatus(taskDTO.getStatus());
+            taskEntity.setDueDate(taskDTO.getDueDate());
+            taskRepository.save(taskEntity);
+        }
+        else{
+            throw new TaskNotFoundException(id);
+        }
 
     }
     public void deleteTask(long id){
-        TaskEntity taskEntity = taskRepository.findById(id).orElseThrow(() -> new RuntimeException("Task not found"));
-        taskRepository.delete(taskEntity);
+        Optional<TaskEntity> taskEntityOptional = taskRepository.findById(id);
+        if (taskEntityOptional.isPresent()) {
+            taskRepository.delete(taskEntityOptional.get());
+        }
+        else{
+            throw new TaskNotFoundException(id);
+        }
     }
     public List<TaskResponseDTO> getAllTasks(){
         List<TaskEntity> tasks= taskRepository.findAll();
