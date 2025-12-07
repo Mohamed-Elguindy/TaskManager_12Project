@@ -23,5 +23,4 @@ public class TaskResponseDTO {
         this.dueDate = taskEntity.getDueDate();
     }
 
-
 }
